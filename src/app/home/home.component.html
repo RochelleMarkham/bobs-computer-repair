@@ -1,0 +1,88 @@
+<!--Header-->
+<mat-toolbar>
+  <mat-toolbar-row>
+
+    <div class = "logo" style = "height: 60px">
+      <img src = "./assets/logo.png">
+    </div>
+
+    <h1>Invoice Builder</h1>
+
+  </mat-toolbar-row>
+
+</mat-toolbar>
+
+<!--Customer Information Module-->
+<mat-card class = "customers" flexLayout = "row">
+  <mat-card-title>Customer Information</mat-card-title>
+
+  <form>
+    <mat-form-field appearance = "outline">
+      <mat-label>First Name</mat-label>
+      <input matInput>
+    </mat-form-field>
+
+    <mat-form-field appearance = "outline">
+      <mat-label>Last Name</mat-label>
+      <input matInput>
+    </mat-form-field>
+
+    <mat-form-field appearance = "outline">
+      <mat-label>Phone Number</mat-label>
+      <input matInput>
+    </mat-form-field>
+
+  </form>
+
+</mat-card>
+
+<!--Services Performed Module-->
+<mat-card class = "services" fxLayout = "column">
+  <mat-card-title>Services Performed</mat-card-title>
+  <form class = "service-list" [formGroup] = "form" (ngSubmit) = "onSubmit(); form.reset();">
+    <mat-label formArrayName = "serviceOptions" *ngFor = "let service of form.controls.serviceOptions['controls']; let i = index">
+      <mat-checkbox formControlName = "{{i}}">{{services[i].name}}.....${{services[i].price}}</mat-checkbox><br/>
+    </mat-label>
+  </form>
+
+</mat-card>
+
+<!--Parts & Services Module-->
+<mat-card class = "parts">
+  <mat-card-title>Parts & Service Charges</mat-card-title>
+
+  <form name = "charges">
+    <mat-form-field class = "parts-charge" appearance = "outline">
+      <mat-label>Parts Total</mat-label>
+      <input id = "partsCharges" matInput>
+    </mat-form-field>
+
+    <mat-form-field appearance = "outline">
+      <mat-label for = "hours-model">Service Charges</mat-label>
+      <input type = "number" id = "laborCharges" matInput>
+      <mat-hint align = "end">Hours worked x $50.00</mat-hint>
+    </mat-form-field>
+
+    <button (click) ="onSubmit()" type = "submit" mat-raised-button>Add to Invoice</button>
+
+    <br/>
+
+    <mat-form-field class = "notes" appearance = "outline">
+      <mat-label>Notes</mat-label>
+      <textarea matInput></textarea>
+    </mat-form-field>
+
+  </form>
+
+</mat-card>
+
+<!--Service Summary Module-->
+<mat-card class = "summary">
+  <mat-card-title class = "summary-title">Service Summary</mat-card-title>
+  <mat-list>
+    <mat-list-item *ngFor = "let service of selectedServices" [name] = "selectedServices.name" [price] = "service.price">{{service.name}}............${{service.price}}</mat-list-item>
+   </mat-list>
+
+  <button (click) = "openDialog()" class = "view" mat-raised-button>View Invoice</button>
+  <button class = "print" mat-raised-button>Print Invoice</button>
+</mat-card>
